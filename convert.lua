@@ -110,7 +110,7 @@ MySQL.Async.fetchAll("SELECT * FROM `loaf_housing`", {}, function(houses)
 end)
 
 MySQL.Async.fetchAll("SELECT * FROM `loaf_houses`", {}, function(houses)
-    local realtorSql = "INSERT INTO `loaf_realtor` (`id`, `label`, `house_apart`, `interior_type`, `interior`, `category`, `entrance`, `price`, `garage_entrance`, `garage_exit`) VALUES\n"
+    local realtorSql = "INSERT INTO `loaf_houses` (`id`, `label`, `house_apart`, `interior_type`, `interior`, `category`, `entrance`, `price`, `garage_entrance`, `garage_exit`) VALUES\n"
     for i, house in pairs(houses) do
         local category = oldNewCategories[house.shell_type]
         local interior = newShellNames[house.shell_type][house.shell_id]

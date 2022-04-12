@@ -95,8 +95,8 @@ MySQL.Async.fetchAll("SELECT * FROM `loaf_housing`", {}, function(houses)
                     furniture[furnitureName].weapons = weapons
 
                     furniture[furnitureName].money = {
-                        cash = furnitureData.cash,
-                        dirty = furnitureData.black_money
+                        cash = furnitureData.storage.cash or 0,
+                        dirty = furnitureData.storage.black_money or 0
                     }
                 end
             end

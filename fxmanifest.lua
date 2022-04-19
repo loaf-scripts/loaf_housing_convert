@@ -5,5 +5,6 @@ server_script {
     "@oxmysql/lib/MySQL.lua",
     
     "input/config.lua",
+    "input/furniture.lua",
     "convert.lua"
 }

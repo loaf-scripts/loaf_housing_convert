@@ -34,32 +34,45 @@ newShells = newShells .. "}"
 print("^2DONE^0 converting shells")
 SaveResourceFile(GetCurrentResourceName(), "output/shells.lua", newShells, -1)
 
-local FurnituresData = {}
 local newFurniture = "Furniture = {\n"
-if Config.Furniture ~= nil then
-    for k, v in pairs(Config.Furniture) do
-        FurnituresData[k] = {}
-        local newlabel = k
-        newFurniture = newFurniture .. Indent(1) .. "{\n"
-
-        newFurniture = newFurniture .. Indent(2) .. ('label = "%s",\n'):format(newlabel)
-        newFurniture = newFurniture .. Indent(2) .. "furniture = {\n"
-        for furid, furdata in pairs(v) do
-            newFurniture = newFurniture .. Indent(3) .. "{\n"
-            newFurniture = newFurniture .. Indent(4) .. ('label = "%s",\n'):format(furdata[1])
-            newFurniture = newFurniture .. Indent(4) .. ('object = "%s",\n'):format(furdata[2])
-            newFurniture = newFurniture .. Indent(4) .. ("price = %s,\n"):format(furdata[3])
-            newFurniture = newFurniture .. Indent(3) .. "},\n"
-            FurnituresData[k][furid] = newlabel
-        end
-        newFurniture = newFurniture .. Indent(2) .. "},\n"
-        newFurniture = newFurniture .. Indent(1) .. "},\n"
-    end
-    newFurniture = newFurniture .. "}"
-
-    print("^2DONE^0 converting Furnitures")
-    SaveResourceFile(GetCurrentResourceName(), "output/furniture.lua", newFurniture, -1)
+local categoryNames = {}
+for _, v in pairs(Furniture.Categories) do
+    categoryNames[v[1]] = v[2]
 end
+for category, furniture in pairs(Furniture) do
+    newFurniture = newFurniture .. Indent(1) .. "{\n"
+    newFurniture = newFurniture .. Indent(2) .. ("label = \"%s\",\n"):format(categoryNames[category] or category)
+    newFurniture = newFurniture .. Indent(2) .. "Furniture = {\n"
+    for furnitureId, furnitureData in pairs(furniture) do
+        newFurniture = newFurniture .. Indent(3) .. "{\n"
+        newFurniture = newFurniture .. Indent(4) .. ("label = \"%s\",\n"):format(furnitureData[1])
+        newFurniture = newFurniture .. Indent(4) .. ("object = \"%s\",\n"):format(furnitureData[2])
+        newFurniture = newFurniture .. Indent(4) .. ("price = %s,\n"):format(furnitureData[3])
+        if furnitureData[4] then
+            newFurniture = newFurniture .. Indent(4) .. "storage = true,\n"
+        end
+        if furnitureData[5] then
+            newFurniture = newFurniture .. Indent(4) .. ("storageSlots = %s\n"):format(furnitureData[5])
+        end
+        if furnitureData[6] then
+            newFurniture = newFurniture .. Indent(4) .. "attached = {\n"
+            for _, attached in pairs(furnitureData[6]) do
+                newFurniture = newFurniture .. Indent(5) .. "{\n"
+                newFurniture = newFurniture .. Indent(6) .. ("offset = %s,\n"):format(attached.offset)
+                newFurniture = newFurniture .. Indent(6) .. ("object = \"%s\"\n"):format(attached.object)
+                newFurniture = newFurniture .. Indent(5) .. "},\n"
+            end
+            newFurniture = newFurniture .. Indent(4) .. "},\n"
+        end
+        newFurniture = newFurniture .. Indent(3) .. "},\n"
+    end
+    newFurniture = newFurniture .. Indent(2) .. "},\n"
+    newFurniture = newFurniture .. Indent(1) .. "},\n"
+end
+newFurniture = newFurniture .. "}"
+
+print("^2DONE^0 converting Furnitures")
+SaveResourceFile(GetCurrentResourceName(), "output/furniture.lua", newFurniture, -1)
 
 local newHouses = "Houses = {\n"
 for houseId, houseData in pairs(Config.Houses) do

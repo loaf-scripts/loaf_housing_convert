@@ -42,7 +42,7 @@ end
 for category, furniture in pairs(Furniture) do
     newFurniture = newFurniture .. Indent(1) .. "{\n"
     newFurniture = newFurniture .. Indent(2) .. ("label = \"%s\",\n"):format(categoryNames[category] or category)
-    newFurniture = newFurniture .. Indent(2) .. "Furniture = {\n"
+    newFurniture = newFurniture .. Indent(2) .. "furniture = {\n"
     for furnitureId, furnitureData in pairs(furniture) do
         newFurniture = newFurniture .. Indent(3) .. "{\n"
         newFurniture = newFurniture .. Indent(4) .. ("label = \"%s\",\n"):format(furnitureData[1])
